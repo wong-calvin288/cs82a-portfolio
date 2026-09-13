@@ -3,5 +3,5 @@
 Labs and final project from CS 82A: Introduction to Data Science at Santa Monica College (Fall 2026)
 
 ## Contents 
--Module 2: Python foundations
--Module 3: Data Cleaning
+- Module 2: Python foundations
+- Module 3: Data Cleaning
