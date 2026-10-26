@@ -1,53 +1,40 @@
 Analysis of US Public Transit Agency's Light and Heavy Rail on Ridership (2002–2026)
 
-## 1. Research Problem
-* **Objective:** Investigate the relationship between transit service supply (measured in **Vehicle Revenue Miles - VRM**) and passenger demand (measured in **Unlinked Passenger Trips - UPT**) across the top 10 major U.S. transit agencies.
-* **Core Question:** How effectively does the supply of service predict passenger ridership demand across major Heavy Rail (`HR`) and Light Rail (`LR`) systems?
+1. Research Problem
+Objective - Investigate the relationship between transit service supply (measured in Vehicle Revenue Miles - VRM) and ridership (measured in Unlinked Passenger Trips - UPT) across the top 10 major U.S. transit agencies.
 
----
+2. Data Source and License
+Source - National Transit Database (NTD) monthly time-series dataset (2002–2026). https://data.transportation.gov/Public-Transit/Complete-Monthly-Ridership-with-Adjustments-and-Es/8bui-9xvu/about_data
+Scope - Restricted to the top 10 transit agencies by ridership volume, filtering specifically for Heavy Rail (HR) and Light Rail (LR) operating modes.
+License/Usage: Publicly available federal transportation data provided via the U.S. Department of Transportation / Federal Transit Administration (FTA).
 
-## 2. Data Source and License
-* **Source:** National Transit Database (NTD) monthly time-series dataset (2002–2026).
-* **Scope:** Restricted to the top 10 transit agencies by ridership volume, filtering specifically for Heavy Rail (HR) and Light Rail (LR) operating modes.
-* **License/Usage:** Publicly available federal transportation data provided via the U.S. Department of Transportation / Federal Transit Administration (FTA).
+3. Data Cleaning & Preparation Log
+1. Importing & Type Conversion - Master data was loaded, and raw text-formatted metrics (UPT and VRM) containing commas were converted into non-destructive numeric columns (UPT_num and VRM_num) while preserving original strings.
+2. Filtering Scope - Filtered down to the top 10 agencies and focused strictly on rail modes (HR and LR).
+3. Handling Missing Values - Applied `.dropna(subset=['UPT_num', 'VRM_num'])` to eliminate missing reporting months, resulting in a clean analysis-ready dataset of 3,968 monthly records.
+4. Discrepancy Note - Noted structural variations in time-series lengths (e.g., New Jersey Transit operating multiple sub-modes yielding ~592 records) due to how regional networks report separate operating divisions to the NTD.
 
----
+4. Findings & Visualizations (EDA)
+   1. Monthly Ridership Trends (Time Series) 
+   Heavy Rail overwhelmingly dominates baseline volume compared to Light Rail. Both modes display a sharp, unprecedented drop during the 2020 pandemic lockdowns followed by a steady recovery curve.
 
-## 3. Data Cleaning & Preparation Log
-1. **Importing & Type Conversion:** Master data was loaded, and raw text-formatted metrics (`UPT` and `VRM`) containing commas were converted into non-destructive numeric columns (`UPT_num` and `VRM_num`) while preserving original strings.
-2. **Filtering Scope:** Filtered down to the top 10 agencies and focused strictly on rail modes (`HR` and `LR`).
-3. **Handling Missing Values:** Applied `.dropna(subset=['UPT_num', 'VRM_num'])` to eliminate missing reporting months, resulting in a clean analysis-ready dataset of **3,968 monthly records**.
-4. **Discrepancy Note:** Noted structural variations in time-series lengths (e.g., New Jersey Transit operating multiple sub-modes yielding ~592 records) due to how regional networks report separate operating divisions to the NTD.
+   2. Service Supply vs. Passenger Demand (Scatter Plot) 
+   Displays a tight, powerful positive correlation. Heavy rail systems cluster heavily in the upper-right quadrant with high mileage and massive ridership counts.
 
----
+   3. Operational Efficiency (Passenger Trips per Revenue Mile) 
+   Compares passenger density relative to service miles run, highlighting how specific light rail networks achieve high passenger yields per mile operated.
 
-## 4. Findings & Visualizations (EDA)
-1. **Monthly Ridership Trends (Time Series):** 
-   * Heavy Rail overwhelmingly dominates baseline volume compared to Light Rail. Both modes display a sharp, unprecedented drop during the 2020 pandemic lockdowns followed by a steady recovery curve.
-2. **Service Supply vs. Passenger Demand (Scatter Plot):** 
-   * Displays a tight, powerful positive correlation. Heavy rail systems cluster heavily in the upper-right quadrant with high mileage and massive ridership counts.
-3. **Operational Efficiency (Passenger Trips per Revenue Mile):** 
-   * Compares passenger density relative to service miles run, highlighting how specific light rail networks achieve high passenger yields per mile operated.
+5. Predictive Linear Regression Model
+Model Type - Ordinary Least Squares Linear Regression (`scikit-learn`).
+Results
+  * R^2 Score 0.9140 (91.4% of the variance in ridership is explained by vehicle revenue miles supplied).
+  Slope (Coefficient) 6.6042 (~6.6 new passenger boardings generated per additional vehicle revenue mile operated).
+  Intercept - `-4,063,781` (A mathematical artifact representing model extrapolation limits near zero).
 
----
 
-## 5. Extra Credit: Predictive Linear Regression Model
-* **Model Type:** Ordinary Least Squares Linear Regression (`scikit-learn`).
-* **Results:**
-  * **$R^2$ Score:** `0.9140` (91.4% of the variance in ridership is explained by vehicle revenue miles supplied).
-  * **Slope (Coefficient):** `6.6042` (~6.6 new passenger boardings generated per additional vehicle revenue mile operated).
-  * **Intercept:** `-4,063,781` (A mathematical baseline artifact representing model extrapolation limits near zero).
+6. Limitations, Ethics, and Model Bias
+Pandemic Distortion - Long-term linear trends are heavily influenced by the structural shock of the 2020–2021 COVID-19 pandemic and subsequent shifting hybrid-work commuting patterns.
+Reporting Inconsistencies - Variations in how local agencies count and report boardings (turnstile counts vs. automated passenger counters) introduce minor reporting discrepancies.
+Service Supply vs. Equity - High statistical efficiency (`VRM` to `UPT` ratio) does not automatically equal equitable transit access. Agencies must balance high-demand trunk lines with essential coverage routes in lower-density neighborhoods.
 
----
 
-## 6. Limitations, Ethics, and Model Bias
-* **Pandemic Distortion:** Long-term linear trends are heavily influenced by the structural shock of the 2020–2021 COVID-19 pandemic and subsequent shifting hybrid-work commuting patterns.
-* **Reporting Inconsistencies:** Variations in how local agencies count and report boardings (turnstile counts vs. automated passenger counters) introduce minor reporting discrepancies.
-* **Service Supply vs. Equity:** High statistical efficiency (`VRM` to `UPT` ratio) does not automatically equal equitable transit access. Agencies must balance high-demand trunk lines with essential coverage routes in lower-density neighborhoods.
-
----
-
-## 7. How to Run the Code
-1. **Clone the Repository:**
-   ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
