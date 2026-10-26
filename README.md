@@ -11,3 +11,4 @@ Labs and final project from CS 82A: Introduction to Data Science at Santa Monica
 - Module 7: Machine Learning: Your First Predictive Models
 - Module 8: Working with AI (Generative AI)
 - Module 9: Cloud Computing, Careers, and Your Portfolio
+- Final - 
